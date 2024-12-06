@@ -30,14 +30,18 @@ function callChatGPT(prompt, model = 'gpt-4o-mini') {
   }
 }
 
-function translateWithGPT(text, targetLanguage) {
+function translateWithGPT(text, targetLanguage, additionalPrompt = "") {
   if (!text || !targetLanguage) {
     return 'Error: Both input text and target language must be provided.';
   }
 
-  const prompt = `Translate the following text into ${targetLanguage}:\n\n"${text}"`;
-  const response = callChatGPT(prompt);
+  let prompt = `Translate the following text into ${targetLanguage}:\n\n"${text}"`;
+   if (additionalPrompt) {
+    prompt += `\n\nAdditional instructions: ${additionalPrompt}`;
+  }
 
+  const response = callChatGPT(prompt);
+  Logger.log(response)
   // Remove quotes only from the beginning and end of the response
   return response.replace(/^"|"$/g, ''); // Removes only leading and trailing quotes
 }
